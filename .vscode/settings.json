@@ -1,0 +1,42 @@
+{
+	"workbench.colorCustomizations": {
+		"activityBar.activeBackground": "#0e1c09",
+		"activityBar.activeBorder": "#2f4891",
+		"activityBar.background": "#0e1c09",
+		"activityBar.foreground": "#e7e7e7",
+		"activityBar.inactiveForeground": "#e7e7e799",
+		"activityBarBadge.background": "#2f4891",
+		"activityBarBadge.foreground": "#e7e7e7",
+		"sash.hoverBorder": "#0e1c09",
+		"tab.activeBorder": "#0e1c09"
+	},
+	"peacock.remoteColor": "#0e1c09",
+	"files.exclude": {
+		"**/.git": false,
+		"**/.svn": false,
+		"**/.hg": false,
+		"**/CVS": false,
+		"**/.DS_Store": false,
+		"**/Thumbs.db": false,
+		".github": false,
+		".vscode": false,
+		".gitattributes": false,
+		".gitignore": false,
+		"LICENSE.md": false,
+		"emitters.Rproj": false
+	},
+	"explorerExclude.backup": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		".github": true,
+		".vscode": true,
+		".gitattributes": true,
+		".gitignore": true,
+		"LICENSE.md": true,
+		"emitters.Rproj": true
+	}
+}

@@ -1,0 +1,42 @@
+home:
+  title: Data streams for R
+url: https://elianhugh.github.io/streams/
+reference:
+    - title: Functional streaming
+      desc: desc
+    - subtitle: Stream creation
+      desc: Functions that create streams
+    - contents:
+      - starts_with("as_")
+    - subtitle: Stream transformation
+      desc: Functions that manipulate streams
+    - contents:
+      - ends_with("_stream")
+    - subtitle: Queue strategies
+      desc: Functions used to create pre-set queue strategies
+    - contents:
+      - has_concept("queue_strategies")
+    - subtitle: Pipes
+      desc: Pipes that manipulate streams in some way
+    - contents:
+      - has_concept("pipes")
+    - subtitle: Events
+      desc: Functions that listen to events
+    - contents:
+      - has_concept("events")
+    - title: Object-Oriented streaming
+      desc: desc
+      contents:
+        - has_concept("streams")
+        - QueueStrategy
+        - EventEmitter
+    - title: Misc
+      desc: desc
+      contents:
+        - ends_with("Controller")
+        - starts_with("summary")
+        - promise_once
+
+template:
+    params:
+        bootswatch: cosmo
