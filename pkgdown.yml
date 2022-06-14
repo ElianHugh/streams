@@ -1,0 +1,9 @@
+pandoc: 2.7.3
+pkgdown: 2.0.4
+pkgdown_sha: ~
+articles: {}
+last_built: 2022-06-14T07:22Z
+urls:
+  reference: https://elianhugh.github.io/streams/reference
+  article: https://elianhugh.github.io/streams/articles
+
