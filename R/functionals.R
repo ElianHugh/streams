@@ -268,67 +268,66 @@ flatten_stream <- function(...) {
 # }
 
 
-# zip_stream <- function(...) {
-#     zenv <- new.env()
-#     zenv$close_counter <- 0L
-#     zenv$input <- as.list(...)
-#     zenv$current_chunk <- data.frame(matrix(ncol = 2L, nrow = 0L))
-#     colnames(zenv$current_chunk) <- c("chunk", "stream_id")
-#     makeActiveBinding("required_len", function() {
-#         length(zenv$input)
-#     }, zenv)
-#     zenv$create_chunk <- function() {
-#         indexes <- which(!duplicated(zenv$current_chunk$stream_id))
-#         print(zenv$current_chunk[indexes, ])
-#         if (length(indexes) >= zenv$required_len) {
-#             out <- zenv$current_chunk[indexes, ]
-#             zenv$current_chunk <- zenv$current_chunk[-indexes, ]
-#             out
-#         } else {
-#             FALSE
-#         }
-#     }
-#     zenv$maybe_close <- function(zipper) {
-#         zenv$close_counter <- zenv$close_counter + 1L
-#         if (zenv$close_counter >= zenv$required_len && zipper$current_state != "closed") {
-#             zipper$close()
-#         }
-#     }
+zip_stream <- function(...) {
+    zenv <- new.env()
+    zenv$close_counter <- 0L
+    zenv$input <- as.list(...)
+    zenv$current_chunk <- data.frame(matrix(ncol = 2L, nrow = 0L))
+    colnames(zenv$current_chunk) <- c("chunk", "stream_id")
+    makeActiveBinding("required_len", function() {
+        length(zenv$input)
+    }, zenv)
+    zenv$create_chunk <- function() {
+        indexes <- which(!duplicated(zenv$current_chunk$stream_id))
+        if (length(indexes) >= zenv$required_len) {
+            out <- zenv$current_chunk[indexes, ]
+            zenv$current_chunk <- zenv$current_chunk[-indexes, ]
+            out
+        } else {
+            FALSE
+        }
+    }
+    zenv$maybe_close <- function(zipper) {
+        zenv$close_counter <- zenv$close_counter + 1L
+        if (zenv$close_counter >= zenv$required_len && zipper$current_state != "closed") {
+            zipper$close()
+        }
+    }
 
 
-#     zipper <- TransformStream$new(
-#         start = function(controller) {
-#             lapply(seq_along(zenv$input), function(index) {
-#                 current_stream <- zenv$input[[index]]
-#                 current_stream$lock_stream()
-#                 current_stream$on("data", function(chunk) {
-#                     zipper$write(list(chunk, index))
-#                 })
-#                 current_stream$on("close", function() {
-#                     zenv$input <- splice_element(zenv$input, current_stream)
-#                     zenv$maybe_close(zipper)
-#                 })
-#             })
-#             zenv$input
-#         },
-#         transform = function(chunk, controller) {
-#             next_chunk <- zenv$create_chunk()
-#             if (!isFALSE(next_chunk)) {
-#                 controller$enqueue(next_chunk$chunk)
-#             }
-#             zenv$current_chunk <- rbind(
-#                 zenv$current_chunk,
-#                 list(chunk = chunk[[1L]], stream_id = chunk[[2L]])
-#             )
-#         },
-#         flush = function(controller) {
-#             if (nrow(zenv$current_chunk) > 0L) {
-#                 controller$enqueue(zenv$current_chunk$chunk)
-#                 zenv$current_chunk <- NULL
-#             }
-#             zenv <<- NULL
-#         },
-#         writeable_strategy = no_backpressure_strategy,
-#         readable_strategy = no_backpressure_strategy
-#     )
-# }
+    zipper <- TransformStream$new(
+        start = function(controller) {
+            lapply(seq_along(zenv$input), function(index) {
+                current_stream <- zenv$input[[index]]
+                current_stream$lock_stream(zipper)
+                current_stream$on("data", function(chunk) {
+                    zipper$write(list(chunk, index))
+                })
+                current_stream$on("close", function() {
+                    zenv$input <- splice_element(zenv$input, current_stream)
+                    zenv$maybe_close(zipper)
+                })
+            })
+            zenv$input
+        },
+        transform = function(chunk, controller) {
+            next_chunk <- zenv$create_chunk()
+            if (!isFALSE(next_chunk)) {
+                controller$enqueue(next_chunk$chunk)
+            }
+            zenv$current_chunk <- rbind(
+                zenv$current_chunk,
+                list(chunk = chunk[[1L]], stream_id = chunk[[2L]])
+            )
+        },
+        flush = function(controller) {
+            if (nrow(zenv$current_chunk) > 0L) {
+                controller$enqueue(zenv$current_chunk$chunk)
+                zenv$current_chunk <- NULL
+            }
+            zenv <<- NULL
+        },
+        writeable_strategy = no_backpressure_strategy,
+        readable_strategy = no_backpressure_strategy
+    )
+}

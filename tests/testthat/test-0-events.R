@@ -90,7 +90,7 @@ test_that("emitter 'error' works", {
     ee <- EventEmitter$new()
     output <- capture_error(ee$emit("error", "an error"))
     expect_error(ee$emit("error", "an error"))
-    expect_s3_class(output, "emitters-unhandled_error_event-error")
+    expect_s3_class(output, "streams-unhandled_error_event-error")
 
     # bad eval
     output <- NULL

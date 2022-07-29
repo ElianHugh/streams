@@ -27,8 +27,6 @@ prototype_promise_then <- function(object, fulfill, reject) {
         object$then(
             onFulfilled = fulfill,
             onRejected = function(...) {
-                print("rejected!")
-                print(fulfill)
                 reject(...)
             }
         )

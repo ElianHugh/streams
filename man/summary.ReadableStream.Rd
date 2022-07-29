@@ -18,4 +18,5 @@ the summary produced by connections.}
 \details{
 Basically, try to make streams feel like
 the connection objects that people are familiar with0
+ReadableStream summary
 }

@@ -32,15 +32,15 @@ as_reader <- function(x, queue_strategy) {
 
 #' @export
 as_reader.default <- function(x, queue_strategy = NULL) {
-    start <- function(c) {
+    start <- function(controller) {
         coro::as_iterator(x)
     }
-    pull <- function(c) {
-        out <- c$start_value()
+    pull <- function(controller) {
+        out <- controller$start_value()
         if (coro::is_exhausted(out)) {
-            c$close()
+            controller$close()
         } else {
-            c$enqueue(out)
+            controller$enqueue(out)
         }
     }
     ReadableStream$new(
@@ -52,7 +52,7 @@ as_reader.default <- function(x, queue_strategy = NULL) {
 
 #' @export
 as_reader.data.frame <- function(x, queue_strategy = NULL) {
-    start <- function(c) {
+    start <- function(controller) {
         n <- nrow(x)
         i <- 0L
         function() {
@@ -63,12 +63,12 @@ as_reader.data.frame <- function(x, queue_strategy = NULL) {
             x[i, ]
         }
     }
-    pull <- function(c) {
-        out <- c$start_value()
+    pull <- function(controller) {
+        out <- controller$start_value()
         if (coro::is_exhausted(out)) {
-            c$close()
+            controller$close()
         } else {
-            c$enqueue(out)
+            controller$enqueue(out)
         }
     }
     ReadableStream$new(
@@ -82,21 +82,21 @@ as_reader.data.frame <- function(x, queue_strategy = NULL) {
 #' @export
 as_reader.sockconn <- function(x, queue_strategy = NULL) {
     ReadableStream$new(
-        start = function(c) {
+        start = function(controller) {
             x
         },
-        pull = function(c) {
-            if (isOpen(c$start_value)) {
-                out <- readLines(c$start_value, n = 1L)
+        pull = function(controller) {
+            if (isOpen(controller$start_value)) {
+                out <- readLines(controller$start_value, n = 1L)
                 if (length(out) > 0L) {
-                    c$enqueue(out)
+                    controller$enqueue(out)
                 }
             } else {
-                c$close()
+                controller$close()
             }
         },
-        flush = function(c) {
-            close(c$start_value)
+        flush = function(controller) {
+            close(controller$start_value)
         },
         queue_strategy = queue_strategy %||% object_length_strategy
     )
@@ -105,22 +105,22 @@ as_reader.sockconn <- function(x, queue_strategy = NULL) {
 #' @export
 as_reader.connection <- function(x, queue_strategy = NULL) {
     ReadableStream$new(
-        start = function(c) {
+        start = function(controller) {
             if (!isOpen(x)) {
                 open(x)
             }
             x
         },
-        pull = function(c) {
-            out <- readLines(c$start_value, n = 1L)
+        pull = function(controller) {
+            out <- readLines(controller$start_value, n = 1L)
             if (length(out) > 0L) {
-                c$enqueue(out)
+                controller$enqueue(out)
             } else {
-                c$close()
+                controller$close()
             }
         },
-        flush = function(c) {
-            close(c$start_value)
+        flush = function(controller) {
+            close(controller$start_value)
         },
         queue_strategy = queue_strategy %||% object_length_strategy
     )
@@ -128,14 +128,14 @@ as_reader.connection <- function(x, queue_strategy = NULL) {
 
 #' @export
 as_reader.promise <- function(x, queue_strategy = NULL) {
-    start <- function(c) {
+    start <- function(controller) {
         x$then(
             onFulfilled = function(v) {
-                c$enqueue(v)
-                c$close()
+                controller$enqueue(v)
+                controller$close()
             },
             onRejected = function(e) {
-                c$error(e)
+                controller$error(e)
             }
         )
         I(x)
@@ -220,20 +220,20 @@ as_writer.default <- function(x, queue_strategy = NULL) {
 #' @export
 as_writer.sockconn <- function(x, queue_strategy = NULL) {
     WriteableStream$new(
-        start = function(c) {
+        start = function(controller) {
             x
         },
-        write = function(chunk, c) {
+        write = function(chunk, controller) {
             if (!is.character(chunk)) {
                 chunk <- as.character(chunk)
             }
             writeLines(
                 text = chunk,
-                con = c$start_value
+                con = controller$start_value
             )
         },
-        flush = function(c) {
-            close(c$start_value)
+        flush = function(controller) {
+            close(controller$start_value)
         },
         queue_strategy = queue_strategy %||% object_length_strategy
     )
@@ -242,27 +242,27 @@ as_writer.sockconn <- function(x, queue_strategy = NULL) {
 #' @export
 as_writer.connection <- function(x, queue_strategy = NULL) {
     WriteableStream$new(
-        start = function(c) {
-            s <- summary(x)$description
-            if ("file" %in% class(x) && !file.exists(s)) {
-                file.create(s)
+        start = function(controller) {
+            summ <- summary(x)$description
+            if ("file" %in% class(x) && !file.exists(summ)) {
+                file.create(summ)
             }
             if (!isOpen(x)) {
                 open(x)
             }
             x
         },
-        write = function(chunk, c) {
+        write = function(chunk, controller) {
             if (!is.character(chunk)) {
                 chunk <- as.character(chunk)
             }
             writeLines(
                 text = chunk,
-                con = c$start_value
+                con = controller$start_value
             )
         },
-        flush = function(c) {
-            close(c$start_value)
+        flush = function(controller) {
+            close(controller$start_value)
         },
         queue_strategy = queue_strategy %||% object_length_strategy
     )
@@ -273,7 +273,7 @@ as_writer.character <- function(x, queue_strategy = NULL) {
     env <- rlang::caller_env()
 
     WriteableStream$new(
-        start = function(c) {
+        start = function(controller) {
             assign(
                 x,
                 NULL,
@@ -281,7 +281,7 @@ as_writer.character <- function(x, queue_strategy = NULL) {
             )
             rlang::as_name("sym")
         },
-        write = function(chunk, c) {
+        write = function(chunk, controller) {
             assign(
                 x,
                 append(
@@ -299,7 +299,7 @@ as_writer.character <- function(x, queue_strategy = NULL) {
 as_writer.process <- function(x, queue_strategy = NULL) {
     if (x$has_input_connection()) {
         WriteableStream$new(
-            start = function(c) {
+            start = function(controller) {
                 x
             },
             write = function(chunk, controller) {

@@ -82,6 +82,7 @@ stream_print <- function(self, private) {
 #' Basically, try to make streams feel like
 #' the connection objects that people are familiar with0
 
+#' ReadableStream summary
 #' @description
 #' 1
 #' @param object todo
@@ -103,6 +104,7 @@ summary.ReadableStream <- function(object, ...) {
     )
 }
 
+#' WriteableStream summary
 #' @description
 #' 1
 #' @param object todo
@@ -121,6 +123,7 @@ summary.WriteableStream <- function(object, ...) {
     )
 }
 
+#' TransformStream summary
 #' @description
 #' 1
 #' @param object todo
@@ -146,3 +149,4 @@ close.WriteableStream <- close_wrapper
 
 #' @export
 close.ReadableStream <- close_wrapper
+

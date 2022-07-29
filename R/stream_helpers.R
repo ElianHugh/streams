@@ -1,6 +1,35 @@
 
+#' TODOC
+#'
+#' @description
+#' TODOC
+#'
+#' @export
+#' @family classes
 is_transform_stream <- function(stream) {
     inherits(stream, "TransformStream")
+}
+
+#' TODOC
+#'
+#' @description
+#' TODOC
+#'
+#' @export
+#' @family classes
+is_readable_stream <- function(stream) {
+    inherits(stream, "ReadableStream")
+}
+
+#' TODOC
+#'
+#' @description
+#' TODOC
+#'
+#' @export
+#' @family classes
+is_writeable_stream <- function(stream) {
+    inherits(stream, "WriteableStream")
 }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,19 +116,4 @@ stream_downstream_is_flowing <- function(private) {
         !stream_is_errored_or_closed(x)
     }))
     any(res)
-}
-
-
-stream_keep_open <- function(self, private) {
-    while(
-        !stream_is_errored_or_closed(self) &&
-        !stream_is_empty_forever(self, private) &&
-        !later::loop_empty(stream_env$stream_loop)
-    ) {
-        later::run_now(
-            timeoutSecs = 10,
-            loop = stream_env$stream_loop
-        )
-        Sys.sleep(1L)
-    }
 }

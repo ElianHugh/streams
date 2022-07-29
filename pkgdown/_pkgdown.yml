@@ -36,6 +36,7 @@ reference:
         - ends_with("Controller")
         - starts_with("summary")
         - promise_once
+        - has_concept("classes")
 
 template:
     params:

@@ -58,5 +58,5 @@ error_to_text <- function(error) {
 }
 
 construct_error <- function(x) {
-    sprintf("emitters-%s-error", x)
+    sprintf("streams-%s-error", x)
 }
