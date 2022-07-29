@@ -55,6 +55,15 @@
     <loc>https://elianhugh.github.io/streams/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://elianhugh.github.io/streams/reference/is_readable_stream.html</loc>
+  </url>
+  <url>
+    <loc>https://elianhugh.github.io/streams/reference/is_transform_stream.html</loc>
+  </url>
+  <url>
+    <loc>https://elianhugh.github.io/streams/reference/is_writeable_stream.html</loc>
+  </url>
+  <url>
     <loc>https://elianhugh.github.io/streams/reference/limit_stream.html</loc>
   </url>
   <url>
@@ -86,6 +95,12 @@
   </url>
   <url>
     <loc>https://elianhugh.github.io/streams/reference/summary.ReadableStream.html</loc>
+  </url>
+  <url>
+    <loc>https://elianhugh.github.io/streams/reference/summary.TransformStream.html</loc>
+  </url>
+  <url>
+    <loc>https://elianhugh.github.io/streams/reference/summary.WriteableStream.html</loc>
   </url>
   <url>
     <loc>https://elianhugh.github.io/streams/reference/teepipe.html</loc>

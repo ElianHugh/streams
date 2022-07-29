@@ -67,25 +67,27 @@ to the underlying stream object.</p>
 
 <p>The return value of the stream's start function</p><div class="section">
 <h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h3>
-<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span class="co"># the start value can be used to store a connection for</span>
-<span class="co"># reference during the pull method</span>
-<span class="va">r</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ReadableStream.html">ReadableStream</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-    start <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">controller</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-         <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">isOpen</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-               <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">open</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-          <span class="op">}</span>
-       <span class="va">x</span>
-    <span class="op">}</span>,
-    pull <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">controller</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">c</span><span class="op">$</span><span class="va">start_value</span>, n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>
-       <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0L</span><span class="op">)</span> <span class="op">{</span>
-           <span class="va">c</span><span class="op">$</span><span class="fu">enqueue</span><span class="op">(</span><span class="va">out</span><span class="op">)</span>
-       <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-           <span class="va">c</span><span class="op">$</span><span class="fu">close</span><span class="op">(</span><span class="op">)</span>
-       <span class="op">}</span>
-    <span class="op">}</span>
-<span class="op">)</span></code></pre></div>
+<p></p><div class="r example copy"><div class="sourceCode"><pre><code><span></span>
+<span>                <span class="co"># the start value can be used to store a connection for</span></span>
+<span><span class="co"># reference during the pull method</span></span>
+<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ReadableStream.html">ReadableStream</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>    start <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">controller</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">file</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>         <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">isOpen</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>               <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">open</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>          <span class="op">}</span></span>
+<span>       <span class="va">x</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    pull <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">controller</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">c</span><span class="op">$</span><span class="va">start_value</span>, n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span>       <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0L</span><span class="op">)</span> <span class="op">{</span></span>
+<span>           <span class="va">c</span><span class="op">$</span><span class="fu">enqueue</span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
+<span>       <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>           <span class="va">c</span><span class="op">$</span><span class="fu">close</span><span class="op">(</span><span class="op">)</span></span>
+<span>       <span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span>            </span></code></pre></div>
 </div>
 
 <p></p><hr></div>
@@ -150,7 +152,7 @@ Whenever the internal buffer reaches a size of <code>0</code>, the stream will s
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

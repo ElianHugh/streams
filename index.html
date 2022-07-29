@@ -71,11 +71,11 @@
 </h2>
 <p>Upon release, you can install streams from <a href="https://elianhugh.r-universe.dev/ui" class="external-link">my r-universe repo</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"streams"</span>, repos <span class="op">=</span> <span class="st">"https://elianhugh.r-universe.dev"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"streams"</span>, repos <span class="op">=</span> <span class="st">"https://elianhugh.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can install the development version of streams from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ElianHugh/streams"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ElianHugh/streams"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
@@ -89,46 +89,46 @@
 </h4>
 <p>Let’s create a read stream:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_reader.html">as_reader</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>
-<span class="va">stream</span>
-<span class="co">#&gt; # A data stream:</span>
-<span class="co">#&gt;     source : function</span>
-<span class="co">#&gt;     class : ReadableStream</span>
-<span class="co">#&gt;     state : started</span>
-<span class="co">#&gt;     can_read : TRUE</span>
-<span class="co">#&gt;     can_write : FALSE</span>
-<span class="co">#&gt;     desired_size : 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_reader.html">as_reader</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">stream</span></span>
+<span><span class="co">#&gt; # A data stream:</span></span>
+<span><span class="co">#&gt;     source : function</span></span>
+<span><span class="co">#&gt;     class : ReadableStream</span></span>
+<span><span class="co">#&gt;     state : started</span></span>
+<span><span class="co">#&gt;     can_read : TRUE</span></span>
+<span><span class="co">#&gt;     can_write : FALSE</span></span>
+<span><span class="co">#&gt;     desired_size : 1</span></span></code></pre></div>
 <p>In this state, the stream will not output any data. We can attach a listener to cause the stream to flow:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stream</span> |&gt;
-  <span class="fu"><a href="reference/on.html">on</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="va">print</span><span class="op">)</span>
-
-<span class="co">#&gt; 1</span>
-<span class="co">#&gt; 2</span>
-<span class="co">#&gt; 3</span>
-<span class="co">#&gt; 4</span>
-<span class="co">#&gt; 5</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/on.html">on</a></span><span class="op">(</span><span class="st">"data"</span>, <span class="va">print</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#&gt; 1</span></span>
+<span><span class="co">#&gt; 2</span></span>
+<span><span class="co">#&gt; 3</span></span>
+<span><span class="co">#&gt; 4</span></span>
+<span><span class="co">#&gt; 5</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="writeable-stream">Writeable Stream<a class="anchor" aria-label="anchor" href="#writeable-stream"></a>
 </h4>
 <p>Similarly, we can create a write stream:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_writer.html">as_writer</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span>
-<span class="va">stream</span>
-<span class="co">#&gt; # A data stream:</span>
-<span class="co">#&gt;     sink : character</span>
-<span class="co">#&gt;     class : WriteableStream</span>
-<span class="co">#&gt;     state : started</span>
-<span class="co">#&gt;     can_read : FALSE</span>
-<span class="co">#&gt;     can_write : TRUE</span>
-<span class="co">#&gt;     desired_size : 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">stream</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_writer.html">as_writer</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span><span class="va">stream</span></span>
+<span><span class="co">#&gt; # A data stream:</span></span>
+<span><span class="co">#&gt;     sink : character</span></span>
+<span><span class="co">#&gt;     class : WriteableStream</span></span>
+<span><span class="co">#&gt;     state : started</span></span>
+<span><span class="co">#&gt;     can_read : FALSE</span></span>
+<span><span class="co">#&gt;     can_write : TRUE</span></span>
+<span><span class="co">#&gt;     desired_size : 1</span></span></code></pre></div>
 <p>We can then write data to the stream, which will write to the variable <code>x</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stream</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="st">"Hello world!"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">stream</span><span class="op">$</span><span class="fu">write</span><span class="op">(</span><span class="st">"Hello world!"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Hello world!"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Hello world!"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="stream-piping">Stream Piping<a class="anchor" aria-label="anchor" href="#stream-piping"></a>
@@ -136,11 +136,11 @@
 <p>We can pull all these together with the <code>%|&gt;%</code> (stream pipe) command. Not to be confused with the base <code>|&gt;</code> or magrittr <code>%&gt;%</code> pipe, the stream pipe command is used to chain streams together.</p>
 <p>Let’s try chaining the previous streams together:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/as_reader.html">as_reader</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">:</span><span class="fl">5L</span><span class="op">)</span> <span class="op"><a href="reference/streampipe.html">%|&gt;%</a></span>
-  <span class="fu"><a href="reference/as_writer.html">as_writer</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/as_reader.html">as_reader</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">:</span><span class="fl">5L</span><span class="op">)</span> <span class="op"><a href="reference/streampipe.html">%|&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/as_writer.html">as_writer</a></span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1 2 3 4 5</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1 2 3 4 5</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -221,7 +221,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
